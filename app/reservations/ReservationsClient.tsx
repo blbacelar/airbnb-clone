@@ -1,49 +1,52 @@
 'use client'
 
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
-import { toast } from "react-hot-toast";
-import Container from "../components/Container";
-import { Heading } from "../components/Heading";
-import ListingCard from "../components/listings/ListingCard";
-import { SafeReservation, SafeUser } from "../types";
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
+import { useCallback, useState } from 'react'
+import { toast } from 'react-hot-toast'
+import Container from '../components/Container'
+import { Heading } from '../components/Heading'
+import ListingCard from '../components/listings/ListingCard'
+import { SafeReservation, SafeUser } from '../types'
 
 interface ReservationsClientProps {
   reservations?: SafeReservation[]
   currentUser?: SafeUser | null
 }
 
-const ReservationsClient:React.FC<ReservationsClientProps> = ({
+// eslint-disable-next-line no-undef
+const ReservationsClient: React.FC<ReservationsClientProps> = ({
   reservations,
-  currentUser
+  currentUser,
 }) => {
   const router = useRouter()
-  const [deletingId,setDeletingId] = useState('')
+  const [deletingId, setDeletingId] = useState('')
 
-  const onCancel = useCallback((id: string) => {
-    setDeletingId(id)
+  const onCancel = useCallback(
+    (id: string) => {
+      setDeletingId(id)
 
-    axios.delete(`/api/reservations/${id}`)
-    .then(() => {
-      toast.success('Reservation cancelled')
-      router.refresh()
-    })
-    .catch((error) => {
-      toast.error(error?.message)
-    })
-    .finally(() => {
-      setDeletingId('')
-    })
-  },[router])
+      axios
+        .delete(`/api/reservations/${id}`)
+        .then(() => {
+          toast.success('Reservation cancelled')
+          router.refresh()
+        })
+        .catch((error) => {
+          toast.error(error?.message)
+        })
+        .finally(() => {
+          setDeletingId('')
+        })
+    },
+    [router],
+  )
 
   return (
     <Container>
-      <Heading
-        title="Reservations"
-        subtitle="Bookings on your properties"
-      />
-      <div className="
+      <Heading title="Reservations" subtitle="Bookings on your properties" />
+      <div
+        className="
         mt-10
         grid
         grid-cols-1
@@ -53,9 +56,9 @@ const ReservationsClient:React.FC<ReservationsClientProps> = ({
         xl:grid-cols-5
         2xl:grid-cols-6
         gap-8
-      ">
-       {
-        reservations?.map((reservation) => (
+      "
+      >
+        {reservations?.map((reservation) => (
           <ListingCard
             key={reservation.id}
             data={reservation.listing}
@@ -66,13 +69,10 @@ const ReservationsClient:React.FC<ReservationsClientProps> = ({
             actionLabel="Cancel reservation"
             currentUser={currentUser}
           />
-        ))
-
-       }
+        ))}
       </div>
     </Container>
-
   )
-};
+}
 
 export default ReservationsClient

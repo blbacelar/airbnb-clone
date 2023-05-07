@@ -1,13 +1,14 @@
-'use client';
+/* eslint-disable no-undef */
+'use client'
 
-import { useCallback } from "react";
-import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { useCallback } from 'react'
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
 
 interface CounterProps {
-  title: string;
-  subtitle: string;
-  value: number;
-  onChange: (value: number) => void;
+  title: string
+  subtitle: string
+  value: number
+  onChange: (value: number) => void
 }
 
 const Counter: React.FC<CounterProps> = ({
@@ -17,24 +18,22 @@ const Counter: React.FC<CounterProps> = ({
   onChange,
 }) => {
   const onAdd = useCallback(() => {
-    onChange(value + 1);
-  }, [onChange, value]);
+    onChange(value + 1)
+  }, [onChange, value])
 
   const onReduce = useCallback(() => {
     if (value === 1) {
-      return;
+      return
     }
 
-    onChange(value - 1);
-  }, [onChange, value]);
+    onChange(value - 1)
+  }, [onChange, value])
 
   return (
     <div className="flex flex-row items-center justify-between">
       <div className="flex flex-col">
         <div className="font-medium">{title}</div>
-        <div className="font-light text-gray-600">
-          {subtitle}
-        </div>
+        <div className="font-light text-gray-600">{subtitle}</div>
       </div>
       <div className="flex flex-row items-center gap-4">
         <div
@@ -63,8 +62,8 @@ const Counter: React.FC<CounterProps> = ({
             text-neutral-600
           "
         >
-            {value}
-          </div>
+          {value}
+        </div>
         <div
           onClick={onAdd}
           className="
@@ -86,7 +85,7 @@ const Counter: React.FC<CounterProps> = ({
         </div>
       </div>
     </div>
-   );
+  )
 }
 
-export default Counter;
+export default Counter

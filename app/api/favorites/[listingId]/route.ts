@@ -3,51 +3,48 @@ import prisma from '@/app/libs/prismadb'
 import { NextResponse } from 'next/server'
 
 interface IParams {
-  listingId?:string
+  listingId?: string
 }
 
-export async function POST(request:Request,
-  {params}: {params: IParams}) {
-
+export async function POST(request: Request, { params }: { params: IParams }) {
   const currentUser = await getCurrentUser()
-  if(!currentUser){
+  if (!currentUser) {
     return NextResponse.error()
   }
 
-  const { listingId } = params;
+  const { listingId } = params
 
-  if(!listingId || typeof listingId !== 'string'){
+  if (!listingId || typeof listingId !== 'string') {
     throw new Error('Invalid ID')
   }
 
-  let favoriteIds = [...(currentUser.favoriteIds || [])]
+  const favoriteIds = [...(currentUser.favoriteIds || [])]
   favoriteIds.push(listingId)
 
   const user = await prisma.user.update({
     where: {
-      id: currentUser.id
+      id: currentUser.id,
     },
     data: {
-      favoriteIds
-    }
+      favoriteIds,
+    },
   })
 
-
-
-  return NextResponse.json({...user, hashedPassword: undefined})
+  return NextResponse.json({ ...user, hashedPassword: undefined })
 }
 
-export async function DELETE(request:Request,
-  {params}: {params: IParams}) {
-
+export async function DELETE(
+  request: Request,
+  { params }: { params: IParams },
+) {
   const currentUser = await getCurrentUser()
-  if(!currentUser){
+  if (!currentUser) {
     return NextResponse.error()
   }
 
-  const { listingId } = params;
+  const { listingId } = params
 
-  if(!listingId || typeof listingId !== 'string'){
+  if (!listingId || typeof listingId !== 'string') {
     throw new Error('Invalid ID')
   }
 
@@ -57,12 +54,12 @@ export async function DELETE(request:Request,
 
   const user = await prisma.user.update({
     where: {
-      id: currentUser.id
+      id: currentUser.id,
     },
     data: {
-      favoriteIds
-    }
+      favoriteIds,
+    },
   })
 
-  return NextResponse.json({...user, hashedPassword: undefined})
+  return NextResponse.json({ ...user, hashedPassword: undefined })
 }

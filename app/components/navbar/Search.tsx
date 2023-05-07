@@ -1,11 +1,11 @@
-'use client';
+'use client'
 
-import { useCountries } from '@/app/hooks/useCoutries';
-import { useSearchModal } from '@/app/hooks/useSearchModal';
-import { differenceInDays } from 'date-fns';
-import { useSearchParams } from 'next/navigation';
-import { useMemo } from 'react';
-import { BiSearch } from 'react-icons/bi';
+import { useCountries } from '@/app/hooks/useCoutries'
+import { useSearchModal } from '@/app/hooks/useSearchModal'
+import { differenceInDays } from 'date-fns'
+import { useSearchParams } from 'next/navigation'
+import { useMemo } from 'react'
+import { BiSearch } from 'react-icons/bi'
 
 export const Search = () => {
   const searchModal = useSearchModal()
@@ -18,20 +18,20 @@ export const Search = () => {
   const guestCount = params?.get('guestCount')
 
   const locationLabel = useMemo(() => {
-    if (locationValue){
+    if (locationValue) {
       return getByValue(locationValue as string)?.label
     }
 
     return 'Anywhere'
-  },[getByValue,locationValue])
+  }, [getByValue, locationValue])
 
   const durationLabel = useMemo(() => {
-    if(startDate && endDate){
+    if (startDate && endDate) {
       const start = new Date(startDate as string)
       const end = new Date(endDate as string)
       let diff = differenceInDays(end, start)
 
-      if (diff === 0){
+      if (diff === 0) {
         diff = 1
       }
 
@@ -39,15 +39,15 @@ export const Search = () => {
     }
 
     return 'Any week'
-  },[startDate,endDate])
+  }, [startDate, endDate])
 
   const guestLabel = useMemo(() => {
-    if(guestCount){
+    if (guestCount) {
       return `${guestCount} Guests`
     }
 
     return 'Add Guests'
-  },[guestCount])
+  }, [guestCount])
 
   return (
     <div
@@ -64,20 +64,25 @@ export const Search = () => {
         cursor-pointer
       "
     >
-      <div className="
+      <div
+        className="
         flex
         flex-row
         items-center
         justify-between
-      ">
-        <div className="
+      "
+      >
+        <div
+          className="
           text-sm
           font-semibold
           px-6
-        ">
+        "
+        >
           {locationLabel}
         </div>
-        <div className="
+        <div
+          className="
           hidden
           sm:block
           text-sm
@@ -86,10 +91,12 @@ export const Search = () => {
           border-x-[1px]
           flex-1
           text-center
-        ">
+        "
+        >
           {durationLabel}
         </div>
-        <div className="
+        <div
+          className="
            text-sm
            pl-6
            pr-2
@@ -98,19 +105,21 @@ export const Search = () => {
            flex-row
            items-center
            gap-3
-        ">
+        "
+        >
           <div className="hidden sm:block">{guestLabel}</div>
-          <div className="
+          <div
+            className="
             p-2
             bg-rose-500
             rounded-full
             text-white
-          ">
-            <BiSearch size={18}/>
-
+          "
+          >
+            <BiSearch size={18} />
           </div>
         </div>
       </div>
     </div>
   )
-};
+}

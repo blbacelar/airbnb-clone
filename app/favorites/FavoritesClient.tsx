@@ -1,24 +1,22 @@
-import { SafeListing, SafeUser } from "@/app/types";
+import { SafeListing, SafeUser } from '@/app/types'
 
-import Container from "@/app/components/Container";
-import { Heading } from "@/app/components/Heading";
-import ListingCard from "@/app/components/listings/ListingCard";
+import Container from '@/app/components/Container'
+import { Heading } from '@/app/components/Heading'
+import ListingCard from '@/app/components/listings/ListingCard'
 
 interface FavoritesClientProps {
-  listings: SafeListing[],
-  currentUser?: SafeUser | null,
+  listings: SafeListing[]
+  currentUser?: SafeUser | null
 }
 
+// eslint-disable-next-line no-undef
 const FavoritesClient: React.FC<FavoritesClientProps> = ({
   listings,
-  currentUser
+  currentUser,
 }) => {
   return (
     <Container>
-      <Heading
-        title="Favorites"
-        subtitle="List of places you favorited!"
-      />
+      <Heading title="Favorites" subtitle="List of places you favorited!" />
       <div
         className="
           mt-10
@@ -41,7 +39,7 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
         ))}
       </div>
     </Container>
-   );
+  )
 }
 
-export default FavoritesClient;
+export default FavoritesClient

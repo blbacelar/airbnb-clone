@@ -8,6 +8,6 @@ interface SearchModalStore {
 
 export const useSearchModal = create<SearchModalStore>((set) => ({
   isOpen: false,
-  onOpen: () => set({isOpen: true}),
-  onClose: () => set({isOpen: false})
+  onOpen: () => set({ isOpen: true }),
+  onClose: () => set({ isOpen: false }),
 }))

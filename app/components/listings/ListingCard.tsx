@@ -1,29 +1,26 @@
-'use client';
+/* eslint-disable no-undef */
+'use client'
 
-import { format } from 'date-fns';
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { format } from 'date-fns'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { useCallback, useMemo } from 'react'
 
-import { useCountries } from "@/app/hooks/useCoutries";
-import {
-  SafeListing,
-  SafeReservation,
-  SafeUser
-} from "@/app/types";
+import { useCountries } from '@/app/hooks/useCoutries'
+import { SafeListing, SafeReservation, SafeUser } from '@/app/types'
 
-import { Button } from "../Button";
-import HeartButton from "../HeartButton";
+import { Button } from '../Button'
+import HeartButton from '../HeartButton'
 
 interface ListingCardProps {
-  data: SafeListing;
-  reservation?: SafeReservation;
-  onAction?: (id: string) => void;
-  disabled?: boolean;
-  actionLabel?: string;
-  actionId?: string;
+  data: SafeListing
+  reservation?: SafeReservation
+  onAction?: (id: string) => void
+  disabled?: boolean
+  actionLabel?: string
+  actionId?: string
   currentUser?: SafeUser | null
-};
+}
 
 const ListingCard: React.FC<ListingCardProps> = ({
   data,
@@ -34,40 +31,42 @@ const ListingCard: React.FC<ListingCardProps> = ({
   actionId = '',
   currentUser,
 }) => {
-  const router = useRouter();
-  const { getByValue } = useCountries();
+  const router = useRouter()
+  const { getByValue } = useCountries()
 
-  const location = getByValue(data.locationValue);
+  const location = getByValue(data.locationValue)
 
   const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
+      e.stopPropagation()
 
-    if (disabled) {
-      return;
-    }
+      if (disabled) {
+        return
+      }
 
-    onAction?.(actionId)
-  }, [disabled, onAction, actionId]);
+      onAction?.(actionId)
+    },
+    [disabled, onAction, actionId],
+  )
 
   const price = useMemo(() => {
     if (reservation) {
-      return reservation.totalPrice;
+      return reservation.totalPrice
     }
 
-    return data.price;
-  }, [reservation, data.price]);
+    return data.price
+  }, [reservation, data.price])
 
   const reservationDate = useMemo(() => {
     if (!reservation) {
-      return null;
+      return null
     }
 
-    const start = new Date(reservation.startDate);
-    const end = new Date(reservation.endDate);
+    const start = new Date(reservation.startDate)
+    const end = new Date(reservation.endDate)
 
-    return `${format(start, 'PP')} - ${format(end, 'PP')}`;
-  }, [reservation]);
+    return `${format(start, 'PP')} - ${format(end, 'PP')}`
+  }, [reservation])
 
   return (
     <div
@@ -96,15 +95,14 @@ const ListingCard: React.FC<ListingCardProps> = ({
             src={data.imageSrc}
             alt="Listing"
           />
-          <div className="
+          <div
+            className="
             absolute
             top-3
             right-3
-          ">
-            <HeartButton
-              listingId={data.id}
-              currentUser={currentUser}
-            />
+          "
+          >
+            <HeartButton listingId={data.id} currentUser={currentUser} />
           </div>
         </div>
         <div className="font-semibold text-lg">
@@ -114,12 +112,8 @@ const ListingCard: React.FC<ListingCardProps> = ({
           {reservationDate || data.category}
         </div>
         <div className="flex flex-row items-center gap-1">
-          <div className="font-semibold">
-            $ {price}
-          </div>
-          {!reservation && (
-            <div className="font-light">night</div>
-          )}
+          <div className="font-semibold">$ {price}</div>
+          {!reservation && <div className="font-light">night</div>}
         </div>
         {onAction && actionLabel && (
           <Button
@@ -131,7 +125,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
         )}
       </div>
     </div>
-   );
+  )
 }
 
-export default ListingCard;
+export default ListingCard

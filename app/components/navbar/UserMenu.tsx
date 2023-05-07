@@ -1,21 +1,22 @@
-'use client';
+'use client'
 
-import { useLoginModal } from '@/app/hooks/useLoginModal';
-import { useRegisterModal } from '@/app/hooks/useRegisterModal';
-import { useRentModal } from '@/app/hooks/useRentModal';
-import { SafeUser } from '@/app/types';
-import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
-import { AiOutlineMenu } from 'react-icons/ai';
-import { Avatar } from '../Avatar';
-import { MenuItem } from './MenuItem';
+import { useLoginModal } from '@/app/hooks/useLoginModal'
+import { useRegisterModal } from '@/app/hooks/useRegisterModal'
+import { useRentModal } from '@/app/hooks/useRentModal'
+import { SafeUser } from '@/app/types'
+import { signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useCallback, useState } from 'react'
+import { AiOutlineMenu } from 'react-icons/ai'
+import { Avatar } from '../Avatar'
+import { MenuItem } from './MenuItem'
 
 interface UserMenuProps {
   currentUser?: SafeUser | null
 }
 
-export const UserMenu:React.FC<UserMenuProps> = ({currentUser}) => {
+// eslint-disable-next-line no-undef
+export const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const router = useRouter()
   const registerModal = useRegisterModal()
   const loginModal = useLoginModal()
@@ -24,16 +25,16 @@ export const UserMenu:React.FC<UserMenuProps> = ({currentUser}) => {
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value)
-  },[])
+  }, [])
 
   const onRent = useCallback(() => {
-    if(!currentUser){
+    if (!currentUser) {
       return loginModal.onOpen()
     }
 
     // Open Rent Modal
     rentModal.onOpen()
-  },[currentUser, loginModal, rentModal])
+  }, [currentUser, loginModal, rentModal])
 
   return (
     <div className="relative">
@@ -74,14 +75,14 @@ export const UserMenu:React.FC<UserMenuProps> = ({currentUser}) => {
           "
         >
           <AiOutlineMenu />
-          <div className='hidden md:block'>
-            <Avatar src={currentUser?.image}/>
+          <div className="hidden md:block">
+            <Avatar src={currentUser?.image} />
           </div>
         </div>
       </div>
       {isOpen && (
         <div
-          className='
+          className="
             absolute
             rounded-xl
             shadow-md
@@ -92,52 +93,39 @@ export const UserMenu:React.FC<UserMenuProps> = ({currentUser}) => {
             right-0
             top-12
             text-sm
-          '
+          "
         >
-          <div className='flex flex-col cursor-pointer'>
+          <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
                 <MenuItem
                   onClick={() => router.push('/trips')}
-                  label='My trips'
+                  label="My trips"
                 />
                 <MenuItem
                   onClick={() => router.push('/favorites')}
-                  label='My favourites'
+                  label="My favourites"
                 />
                 <MenuItem
                   onClick={() => router.push('/reservations')}
-                  label='My reservations'
+                  label="My reservations"
                 />
                 <MenuItem
                   onClick={() => router.push('/properties')}
-                  label='My properties'
+                  label="My properties"
                 />
-                <MenuItem
-                  onClick={rentModal.onOpen}
-                  label='Airbnb My home'
-                />
-                <MenuItem
-                  onClick={() => signOut()}
-                  label='Logout'
-                />
+                <MenuItem onClick={rentModal.onOpen} label="Airbnb My home" />
+                <MenuItem onClick={() => signOut()} label="Logout" />
               </>
             ) : (
               <>
-                <MenuItem
-                  onClick={loginModal.onOpen}
-                  label='Login'
-                />
-                <MenuItem
-                  onClick={registerModal.onOpen}
-                  label='Sign Up'
-                />
+                <MenuItem onClick={loginModal.onOpen} label="Login" />
+                <MenuItem onClick={registerModal.onOpen} label="Sign Up" />
               </>
             )}
-
           </div>
         </div>
       )}
     </div>
   )
-};
+}

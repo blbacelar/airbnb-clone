@@ -1,18 +1,15 @@
-'use client';
+'use client'
 
-import React from "react";
+import React from 'react'
 
 interface MenuItemProps {
   onClick: () => void
   label: string
 }
 
-export const MenuItem: React.FC<MenuItemProps> = ({
-  onClick,
-  label
-}) => {
+export const MenuItem: React.FC<MenuItemProps> = ({ onClick, label }) => {
   return (
-    <div 
+    <div
       onClick={onClick}
       className="
         px-4
@@ -20,8 +17,9 @@ export const MenuItem: React.FC<MenuItemProps> = ({
         hover:bg-neutral-100
         transition
         font-semibold
-    ">
+    "
+    >
       {label}
     </div>
   )
-};
+}

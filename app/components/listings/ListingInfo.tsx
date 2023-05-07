@@ -1,30 +1,33 @@
-'use client';
+/* eslint-disable no-undef */
+'use client'
 
-import dynamic from "next/dynamic";
-import { IconType } from "react-icons";
+import dynamic from 'next/dynamic'
+import { IconType } from 'react-icons'
 
-import { useCountries } from "@/app/hooks/useCoutries";
-import { SafeUser } from "@/app/types";
+import { useCountries } from '@/app/hooks/useCoutries'
+import { SafeUser } from '@/app/types'
 
-import { Avatar } from "../Avatar";
-import ListingCategory from "./ListingCategory";
+import { Avatar } from '../Avatar'
+import ListingCategory from './ListingCategory'
 
 const Map = dynamic(() => import('../Map'), {
-  ssr: false
-});
+  ssr: false,
+})
 
 interface ListingInfoProps {
-  user: SafeUser,
-  description: string;
-  guestCount: number;
-  roomCount: number;
-  bathroomCount: number;
-  category: {
-    icon: IconType,
-    label: string;
-    description: string;
-  } | undefined
-  locationValue: string;
+  user: SafeUser
+  description: string
+  guestCount: number
+  roomCount: number
+  bathroomCount: number
+  category:
+    | {
+        icon: IconType
+        label: string
+        description: string
+      }
+    | undefined
+  locationValue: string
 }
 
 const ListingInfo: React.FC<ListingInfoProps> = ({
@@ -36,7 +39,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   category,
   locationValue,
 }) => {
-  const { getByValue } = useCountries();
+  const { getByValue } = useCountries()
 
   const coordinates = getByValue(locationValue)?.latlng
 
@@ -56,7 +59,8 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           <div>Hosted by {user?.name}</div>
           <Avatar src={user?.image} />
         </div>
-        <div className="
+        <div
+          className="
             flex
             flex-row
             items-center
@@ -65,15 +69,9 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             text-neutral-500
           "
         >
-          <div>
-            {guestCount} guests
-          </div>
-          <div>
-            {roomCount} rooms
-          </div>
-          <div>
-            {bathroomCount} bathrooms
-          </div>
+          <div>{guestCount} guests</div>
+          <div>{roomCount} rooms</div>
+          <div>{bathroomCount} bathrooms</div>
         </div>
       </div>
       <hr />
@@ -85,14 +83,16 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
         />
       )}
       <hr />
-      <div className="
-      text-lg font-light text-neutral-500">
+      <div
+        className="
+      text-lg font-light text-neutral-500"
+      >
         {description}
       </div>
       <hr />
       <Map center={coordinates} />
     </div>
-   );
+  )
 }
 
-export default ListingInfo;
+export default ListingInfo

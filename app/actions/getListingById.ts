@@ -1,25 +1,23 @@
-import prisma from "@/app/libs/prismadb";
+import prisma from '@/app/libs/prismadb'
 
 export interface IListingsParams {
   listingId?: string
 }
 
-const getListingsById = async (
-  params: IListingsParams
-) => {
+const getListingsById = async (params: IListingsParams) => {
   try {
-    const { listingId } = params;
+    const { listingId } = params
 
     const listing = await prisma.listing.findUnique({
       where: {
-        id: listingId
+        id: listingId,
       },
       include: {
-        user: true
-      }
-    });
+        user: true,
+      },
+    })
 
-    if(!listing){
+    if (!listing) {
       return null
     }
 
@@ -30,11 +28,11 @@ const getListingsById = async (
         ...listing.user,
         createdAt: listing.user.createdAt.toISOString(),
         updatedAt: listing.user.updatedAt.toISOString(),
-        emailVerified: listing.user.emailVerified?.toISOString() || null
-      }
-    };
+        emailVerified: listing.user.emailVerified?.toISOString() || null,
+      },
+    }
   } catch (error: any) {
-    throw new Error(error);
+    throw new Error(error)
   }
 }
 

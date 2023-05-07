@@ -1,20 +1,21 @@
+/* eslint-disable no-unused-vars */
 'use client'
 
-import { useRentModal } from "@/app/hooks/useRentModal";
-import axios from "axios";
-import dynamic from 'next/dynamic';
-import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
-import { Heading } from "../Heading";
-import { CategoryInput } from "../inputs/CategoryInput";
-import Counter from "../inputs/Counter";
-import { CountrySelect } from "../inputs/CountrySelect";
-import { ImageUpload } from "../inputs/ImageUpload";
-import { Input } from "../inputs/Input";
-import { categories } from "../navbar/Categories";
-import { Modal } from "./Modal";
+import { useRentModal } from '@/app/hooks/useRentModal'
+import axios from 'axios'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
+import { useMemo, useState } from 'react'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
+import { Heading } from '../Heading'
+import { CategoryInput } from '../inputs/CategoryInput'
+import Counter from '../inputs/Counter'
+import { CountrySelect } from '../inputs/CountrySelect'
+import { ImageUpload } from '../inputs/ImageUpload'
+import { Input } from '../inputs/Input'
+import { categories } from '../navbar/Categories'
+import { Modal } from './Modal'
 
 enum STEPS {
   CATEGORY = 0,
@@ -22,7 +23,7 @@ enum STEPS {
   INFO = 2,
   IMAGES = 3,
   DESCRIPTION = 4,
-  PRICE = 5
+  PRICE = 5,
 }
 
 export const RentModal = () => {
@@ -36,10 +37,8 @@ export const RentModal = () => {
     handleSubmit,
     setValue,
     watch,
-    formState: {
-      errors,
-    },
-    reset
+    formState: { errors },
+    reset,
   } = useForm<FieldValues>({
     defaultValues: {
       category: '',
@@ -50,8 +49,8 @@ export const RentModal = () => {
       imageSrc: '',
       price: 1,
       title: '',
-      description: ''
-    }
+      description: '',
+    },
   })
 
   const category = watch('category')
@@ -61,15 +60,20 @@ export const RentModal = () => {
   const bathroomCount = watch('bathroomCount')
   const imageSrc = watch('imageSrc')
 
-  const Map = useMemo(() => dynamic(() => import('../Map'), {
-    ssr: false
-  }), [location]);
+  const Map = useMemo(
+    () =>
+      dynamic(() => import('../Map'), {
+        ssr: false,
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [location],
+  )
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
       shouldDirty: true,
       shouldTouch: true,
-      shouldValidate: true
+      shouldValidate: true,
     })
   }
 
@@ -82,43 +86,44 @@ export const RentModal = () => {
   }
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    if(step !== STEPS.PRICE){
+    if (step !== STEPS.PRICE) {
       return onNext()
     }
 
     setIsLoading(true)
 
-    axios.post('/api/listings', data)
-    .then(() => {
-      toast.success('Listing created')
-      router.refresh()
-      reset()
-      setStep(STEPS.CATEGORY)
-      rentModal.onClose()
-    })
-    .catch((error) => {
-      toast.error(error.message)
-    })
-    .finally(() => {
-      setIsLoading(false)
-    })
+    axios
+      .post('/api/listings', data)
+      .then(() => {
+        toast.success('Listing created')
+        router.refresh()
+        reset()
+        setStep(STEPS.CATEGORY)
+        rentModal.onClose()
+      })
+      .catch((error) => {
+        toast.error(error.message)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   const actionLabel = useMemo(() => {
-    if(step === STEPS.PRICE){
+    if (step === STEPS.PRICE) {
       return 'Create'
     }
 
     return 'Next'
-  },[step])
+  }, [step])
 
   const secondaryActionLabel = useMemo(() => {
-    if(step === STEPS.CATEGORY){
+    if (step === STEPS.CATEGORY) {
       return undefined
     }
 
     return 'Back'
-  },[step])
+  }, [step])
 
   let bodyContent = (
     <div className="flex flex-col gap-8">
@@ -126,19 +131,20 @@ export const RentModal = () => {
         title="Which of these best descibes your place?"
         subtitle="Pick a category"
       />
-      <div className="
+      <div
+        className="
         grid
         grid-cols-1
         md:grid-cols-2
         gap-3
         max-h-[50vh]
         overflow-y-auto
-      ">
+      "
+      >
         {categories.map((item) => (
           <div key={item.label} className="col-span-1">
             <CategoryInput
-              onClick={(category) =>
-              setCustomValue('category', category)}
+              onClick={(category) => setCustomValue('category', category)}
               selected={category === item.label}
               label={item.label}
               icon={item.icon}
@@ -149,7 +155,7 @@ export const RentModal = () => {
     </div>
   )
 
-  if(step === STEPS.LOCATION){
+  if (step === STEPS.LOCATION) {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
@@ -160,14 +166,12 @@ export const RentModal = () => {
           value={location}
           onChange={(value) => setCustomValue('location', value)}
         />
-        <Map
-          center={location?.latlng}
-        />
+        <Map center={location?.latlng} />
       </div>
     )
   }
 
-  if(step === STEPS.INFO) {
+  if (step === STEPS.INFO) {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
@@ -198,7 +202,7 @@ export const RentModal = () => {
     )
   }
 
-  if(step === STEPS.IMAGES) {
+  if (step === STEPS.IMAGES) {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
@@ -213,7 +217,7 @@ export const RentModal = () => {
     )
   }
 
-  if(step === STEPS.DESCRIPTION){
+  if (step === STEPS.DESCRIPTION) {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
@@ -240,7 +244,7 @@ export const RentModal = () => {
     )
   }
 
-  if(step === STEPS.PRICE){
+  if (step === STEPS.PRICE) {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
@@ -265,7 +269,7 @@ export const RentModal = () => {
     <Modal
       isOpen={rentModal.isOpen}
       onClose={rentModal.onClose}
-      title='Airbnb your home'
+      title="Airbnb your home"
       actionLabel={actionLabel}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
@@ -273,4 +277,4 @@ export const RentModal = () => {
       onSubmit={handleSubmit(onSubmit)}
     />
   )
-};
+}

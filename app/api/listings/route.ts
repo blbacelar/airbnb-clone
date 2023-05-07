@@ -2,9 +2,9 @@ import getCurrentUser from '@/app/actions/getCurrentUser'
 import prisma from '@/app/libs/prismadb'
 import { NextResponse } from 'next/server'
 
-export async function POST(request:Request) {
+export async function POST(request: Request) {
   const currentUser = await getCurrentUser()
-  if(!currentUser){
+  if (!currentUser) {
     return NextResponse.error()
   }
 
@@ -18,7 +18,7 @@ export async function POST(request:Request) {
     imageSrc,
     price,
     title,
-    description
+    description,
   } = body
 
   const listing = await prisma.listing.create({
@@ -29,14 +29,12 @@ export async function POST(request:Request) {
       roomCount,
       bathroomCount,
       imageSrc,
-      price: parseInt(price) ,
+      price: parseInt(price),
       title,
       description,
-      userId: currentUser.id
-    }
+      userId: currentUser.id,
+    },
   })
 
-
-
-  return NextResponse.json({...listing, userId: undefined})
+  return NextResponse.json({ ...listing, userId: undefined })
 }
